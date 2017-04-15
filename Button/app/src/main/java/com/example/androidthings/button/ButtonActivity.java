@@ -40,7 +40,8 @@ import java.io.IOException;
 public class ButtonActivity extends Activity {
     private static final String TAG = ButtonActivity.class.getSimpleName();
 
-    private Gpio mLedGpio;
+    private Gpio mLedGpio1;
+    private Gpio mLedGpio2;
     private ButtonInputDriver mButtonInputDriver;
 
     @Override
@@ -51,8 +52,10 @@ public class ButtonActivity extends Activity {
         PeripheralManagerService pioService = new PeripheralManagerService();
         try {
             Log.i(TAG, "Configuring GPIO pins");
-            mLedGpio = pioService.openGpio(BoardDefaults.getGPIOForLED());
-            mLedGpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
+          mLedGpio1 = pioService.openGpio(BoardDefaults.getGPIOForLED());
+          mLedGpio1.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
+          mLedGpio2 = pioService.openGpio(BoardDefaults.getGPIOForLED());
+          mLedGpio2.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
 
             Log.i(TAG, "Registering button driver");
             // Initialize and register the InputDriver that will emit SPACE key events
@@ -96,7 +99,8 @@ public class ButtonActivity extends Activity {
      */
     private void setLedValue(boolean value) {
         try {
-            mLedGpio.setValue(value);
+            mLedGpio1.setValue(value);
+            mLedGpio2.setValue(value);
         } catch (IOException e) {
             Log.e(TAG, "Error updating GPIO value", e);
         }
@@ -117,15 +121,26 @@ public class ButtonActivity extends Activity {
             }
         }
 
-        if (mLedGpio != null) {
+        if (mLedGpio1 != null) {
             try {
-                mLedGpio.close();
+                mLedGpio1.close();
             } catch (IOException e) {
                 Log.e(TAG, "Error closing LED GPIO", e);
             } finally{
-                mLedGpio = null;
+                mLedGpio1 = null;
             }
-            mLedGpio = null;
+            mLedGpio1 = null;
+        }
+
+        if (mLedGpio2 != null) {
+            try {
+                mLedGpio2.close();
+            } catch (IOException e) {
+                Log.e(TAG, "Error closing LED GPIO", e);
+            } finally{
+                mLedGpio2 = null;
+            }
+            mLedGpio2 = null;
         }
     }
 }
