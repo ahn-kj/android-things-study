@@ -6,6 +6,8 @@ Android Things 와 라즈베리파이 3 을 연계하여 LED 1개를 제어하�
 
 [https://www.androidthings.rocks/2017/01/03/get-started-with-android-things-today/](https://www.androidthings.rocks/2017/01/03/get-started-with-android-things-today/)
 
+[https://androidthings.rocks/2017/01/08/your-first-blinking-led/](https://androidthings.rocks/2017/01/08/your-first-blinking-led/)
+
 원본 Git Repository 는 다음과 같습니다.
 
 [https://github.com/mplacona/HelloThings](https://github.com/mplacona/HelloThings)
