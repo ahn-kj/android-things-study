@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "345501231484",
+    "firebase_url": "https://ledcontroller-77054.firebaseio.com",
+    "project_id": "ledcontroller-77054",
+    "storage_bucket": "ledcontroller-77054.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345501231484:android:dfc868b59a373fde",
+        "android_client_info": {
+          "package_name": "singularity.io.iosingularityledwithfirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345501231484-dm50bsei5a5sahbl0g431ao280eb7joj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBivn6gP8GjuWaR8Qfwo51VSMpMklg0d2Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
