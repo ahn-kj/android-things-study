@@ -1,4 +1,4 @@
-package singularity.io.iosingularityledwithfirebase;
+package io.singularity.ledwithfirebase;
 
 import org.junit.Test;
 

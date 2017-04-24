@@ -6,6 +6,7 @@ android {
     defaultConfig {
         applicationId "io.singularity.ledwithfirebase"
         minSdkVersion 15
+
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -27,9 +28,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
-    provided 'com.google.android.things:androidthings:0.2-devpreview'
     compile 'com.google.code.gson:gson:2.5'
-    compile 'com.google.firebase:firebase-core:9.6.1'
-    compile 'com.google.firebase:firebase-database:9.6.1'
+    compile 'com.google.firebase:firebase-database:10.0.1'
+    provided 'com.google.android.things:androidthings:0.3-devpreview'
 }
+
 apply plugin: 'com.google.gms.google-services'
