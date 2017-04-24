@@ -1,0 +1,94 @@
+{
+  "project_info": {
+    "project_number": "263148778675",
+    "firebase_url": "https://gpsbasegame.firebaseio.com",
+    "project_id": "gpsbasegame",
+    "storage_bucket": "gpsbasegame.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263148778675:android:cf8b1b58ea0955bf",
+        "android_client_info": {
+          "package_name": "com.tmsc.gpsbasegame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "263148778675-6118tvoi727thupaerva8ct9vad75ra3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tmsc.gpsbasegame",
+            "certificate_hash": "627dfb330931ce3aa8fdd0e2dedaa9c30db32ade"
+          }
+        },
+        {
+          "client_id": "263148778675-j1d6mrru2jq01sjqo73ko2qlblp3tvt2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tmsc.gpsbasegame",
+            "certificate_hash": "a566a41dca04706f61eceaf4f0edef88796f4f75"
+          }
+        },
+        {
+          "client_id": "263148778675-fe2qv17sae1rod7b7ffa7v8v4srro0ev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIC-K8_x2zs72CaboY4Hol4OEP013bgec"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "263148778675-fe2qv17sae1rod7b7ffa7v8v4srro0ev.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263148778675:android:446691d1ef91af48",
+        "android_client_info": {
+          "package_name": "io.singularity.ledwithfirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "263148778675-fe2qv17sae1rod7b7ffa7v8v4srro0ev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIC-K8_x2zs72CaboY4Hol4OEP013bgec"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
