@@ -1,7 +1,6 @@
 package io.singularity.ledwithfirebase;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -19,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final String LED = "BCM6";
 
-    private Handler mHandler = new Handler();
     private Gpio mLedGpio;
 
     @Override
