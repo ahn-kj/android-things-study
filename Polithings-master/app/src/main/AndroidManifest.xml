@@ -24,14 +24,6 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-
-        <!--<activity android:name=".example.ULN2003StepperMotorActivity">-->
-        <!--</activity>-->
-        <!---->
-        <activity android:name=".NumpadActivity">
-        </activity>
-        <activity android:name=".example.A4988StepperMotorActivity">
-        </activity>
     </application>
 
 </manifest>
