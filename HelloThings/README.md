@@ -1,6 +1,6 @@
 # 프로젝트 개요
 
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/jvyNrBTJSbA&t/0.jpg)](http://www.youtube.com/watch?v=jvyNrBTJSbA&t "Video Title")
+[![youtube](http://img.youtube.com/vi/jvyNrBTJSbA/0.jpg)](http://www.youtube.com/watch?v=jvyNrBTJSbA )
 
 Android Things 와 라즈베리파이 3 을 연계하여 LED 1개를 제어하는 매우 간단한 샘플입니다.
 
