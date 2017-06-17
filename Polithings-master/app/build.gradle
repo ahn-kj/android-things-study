@@ -1,15 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.tmiyamon.config'
 
 def minSdk = { 24 }
-
-buildscript {
-
-    dependencies {
-        classpath rootProject.ext.kotlinPlugin
-    }
-}
 
 android {
     compileSdkVersion 25
@@ -78,8 +70,7 @@ kapt {
 
 dependencies {
     compile project(':uln2003')
-    compile rootProject.ext.libs.kotlin
-    compile rootProject.ext.libs.appcompat
-    provided rootProject.ext.libs.android_things
-    testCompile rootProject.ext.libs.junit
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    provided 'com.google.android.things:androidthings:0.4-devpreview'
 }

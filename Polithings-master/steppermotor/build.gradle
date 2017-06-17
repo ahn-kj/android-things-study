@@ -1,13 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
-buildscript {
-
-    dependencies {
-        classpath rootProject.ext.kotlinPlugin
-    }
-}
-
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
@@ -31,6 +24,8 @@ kapt {
 }
 
 dependencies {
-    compile rootProject.ext.libs.kotlin
-    provided rootProject.ext.libs.android_things
+//    compile rootProject.ext.libs.kotlin
+//    provided rootProject.ext.libs.android_things
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    provided 'com.google.android.things:androidthings:0.4-devpreview'
 }
