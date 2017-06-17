@@ -27,5 +27,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.0'
     testCompile 'junit:junit:4.12'
 
+    // 안드로이드 팅스 라이브러리 디펜덴시. provided 컴파일시 클래스파일을 포함시키지 않음.
     provided 'com.google.android.things:androidthings:0.2-devpreview'
 }

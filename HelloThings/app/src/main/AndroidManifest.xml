@@ -4,6 +4,7 @@
 
     <application
         android:label="@string/app_name">
+        <!-- 안드로이드 팅스 라이브러리. 라이브러리를 쓰겠다 -->
         <uses-library android:name="com.google.android.things"/>
         <activity android:name=".MainActivity">
             <!-- Launch activity as default from Android Studio -->
@@ -15,6 +16,8 @@
             <!-- Launch activity automatically on boot -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+                <!-- IOT 런쳐로 사용. IOT 런쳐는 일반런쳐와 다르게 디펄트 런쳐로 실행됨.
+                IOT 는 한개의 프로그램만 보통 사용하고, 모니터도 대부분 없음. 그래서인듯. -->
                 <category android:name="android.intent.category.IOT_LAUNCHER"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
