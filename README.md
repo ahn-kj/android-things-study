@@ -33,6 +33,10 @@ Android Things 는 라즈베리파이 3 를 지원합니다.
 
 ## 라즈베리파이3 에 Android Things 올리는 방법
 
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE"><img src="https://www.youtube.com/watch?v=jvyNrBTJSbA" alt="IMAGE ALT TEXT"></a>
+</div>
+
 ## 각 프로젝트 실행 방법
 
 > 작성 필요
