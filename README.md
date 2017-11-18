@@ -15,7 +15,7 @@ Android Things 를 이용하여 IOT 를 스터디하는 프로젝트입니다.
 
 ## 공통 준비물 
 
-#### 라즈베리파이 3
+* 라즈베리파이 3
 
 Android Things 는 라즈베리파이 3 를 지원합니다.
 라즈베리파이3 이외에도 지원하는 디바이스는 다음과 같습니다.
@@ -23,14 +23,13 @@ Android Things 는 라즈베리파이 3 를 지원합니다.
 <!-- HTML CODE-->
 <embed type="html" width="420" height="315" src="https://developer.android.com/things/hardware/developer-kits.html#hardware_platforms" frameborder="0"></embed>
 
-
 [지원 디바이스 참조 링크](https://developer.android.com/things/hardware/developer-kits.html#hardware_platforms)
 
-#### MICRO SD CARD
+* MICRO SD CARD
 
-#### Ethenet cable
+* Ethenet cable
 
-#### Android SDK
+* Android SDK
 
 ## 라즈베리파이3 에 Android Things 올리는 방법
 
