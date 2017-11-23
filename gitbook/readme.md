@@ -47,13 +47,13 @@ Android Things 는 IoT 플랫폼이니까 공부하기 위해서는 먼저 IoT �
 
 #### 스마트 자전거 잠금장치 트랙커
 
-<img src="http://postfiles4.naver.net/MjAxNzExMjNfMTAx/MDAxNTExNDA1MTk4Mzg1.vTb-yph7emeQuY_0VcMpqM7cjBapT_SfLnwC3KhH-IIg.EyhJjB5JHbPeTREAawCiy94nnKHlLaSorUdU_v1_-wEg.PNG.akj61300/스크린샷_2017-11-23_오전_11.46.20.png?type=w773" width="720px" />
+<img src="http://postfiles4.naver.net/MjAxNzExMjNfMTAx/MDAxNTExNDA1MTk4Mzg1.vTb-yph7emeQuY_0VcMpqM7cjBapT_SfLnwC3KhH-IIg.EyhJjB5JHbPeTREAawCiy94nnKHlLaSorUdU_v1_-wEg.PNG.akj61300/스크린샷_2017-11-23_오전_11.46.20.png?type=w773" width="500px" />
 
 스마트 자전거 잠금장치 트랙커는 자전거 잠금장치에 IoT 를 결합해 키없이 자전거를 잠금 또는 해제 할 수 있고, 더불어 GPS 기반으로 Geo Tagging 을 제공합니다.
 
 #### 스마트 스피커
 
-<img src="http://postfiles1.naver.net/MjAxNzExMjNfMTc3/MDAxNTExNDA0Mjk5MjA0.u2v1jjobA1OtjBXAJCNj6vXcAzImafRi9AzgHvLEQoUg.VHGMIlZf0PfHKdr8BK2N5QgrV4uqqrgZA3M2_W5-GjAg.PNG.akj61300/스크린샷_2017-11-23_오전_11.31.12.png?type=w773" />
+<img src="http://postfiles1.naver.net/MjAxNzExMjNfMTc3/MDAxNTExNDA0Mjk5MjA0.u2v1jjobA1OtjBXAJCNj6vXcAzImafRi9AzgHvLEQoUg.VHGMIlZf0PfHKdr8BK2N5QgrV4uqqrgZA3M2_W5-GjAg.PNG.akj61300/스크린샷_2017-11-23_오전_11.31.12.png?type=w773" width="500px" />
 
 스마트 스피커는 스피커에 IoT 를 결합한 상품이지만 핵심은 스마트 홈을 제어하는데에 목적이 있습니다. 애플의 시리 삼성의 빅스비처럼 사용자의 음성명령을 인식하고 다른 IoT 장비를 제어하는 것입니다. 
 
