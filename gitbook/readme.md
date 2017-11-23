@@ -14,7 +14,7 @@ Android Things 가 다른 오픈소스들과 다른 점은, 구글이 주도하�
 
 Android Things 는 구글 홈페이지에서 다음과 같이 소개중입니다.
 
-<img src="http://postfiles7.naver.net/MjAxNzExMjNfMjEg/MDAxNTExNDAzNDkzMzg5.IT4q-mbE9BHvwba-pjpC_mW3Jaw9hzPrJyREGjMI2bMg.Go3uxZe9s7Nxe5UIcvloHUtsEzKHlSmK6gp1trACAyIg.PNG.akj61300/스크린샷_2017-11-23_오전_11.17.40.png?type=w773" />
+<img src="http://postfiles13.naver.net/MjAxNzExMjNfMTQy/MDAxNTExNDIxODY1NzI2.AMLu2j5KdxALjFE4DU5NvR0oNJepFS3s5S5_mJxJK5Qg.cSxClq8La0rolD1Ll2Pxt3EmqcBYWKniGVgKLl_XaD8g.PNG.akj61300/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2017-11-23_%EC%98%A4%ED%9B%84_4.23.35.png?type=w2" />
 
 * The ease and power of Android
 * Rapid prototypes to real products
