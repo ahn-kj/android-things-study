@@ -47,7 +47,7 @@ Android Things 는 IoT 플랫폼이니까 공부하기 위해서는 먼저 IoT �
 
 #### 스마트 자전거 잠금장치 트랙커
 
-<img src="http://postfiles4.naver.net/MjAxNzExMjNfMTAx/MDAxNTExNDA1MTk4Mzg1.vTb-yph7emeQuY_0VcMpqM7cjBapT_SfLnwC3KhH-IIg.EyhJjB5JHbPeTREAawCiy94nnKHlLaSorUdU_v1_-wEg.PNG.akj61300/스크린샷_2017-11-23_오전_11.46.20.png?type=w773" />
+<img src="http://postfiles4.naver.net/MjAxNzExMjNfMTAx/MDAxNTExNDA1MTk4Mzg1.vTb-yph7emeQuY_0VcMpqM7cjBapT_SfLnwC3KhH-IIg.EyhJjB5JHbPeTREAawCiy94nnKHlLaSorUdU_v1_-wEg.PNG.akj61300/스크린샷_2017-11-23_오전_11.46.20.png?type=w773" width="720px" />
 
 스마트 자전거 잠금장치 트랙커는 자전거 잠금장치에 IoT 를 결합해 키없이 자전거를 잠금 또는 해제 할 수 있고, 더불어 GPS 기반으로 Geo Tagging 을 제공합니다.
 
