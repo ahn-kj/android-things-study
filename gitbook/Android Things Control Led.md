@@ -101,15 +101,51 @@ Android Things 는 ADBD(ADB 데몬) 가 기본적으로 TCP 모드로 동작되�
 
 즉 Android Things 디바이스에 이더넷 케이블을 꼽고 ADB TCP 연결을 하면 된다는 이야기입니다.
 
-라즈베리파이에 랜선을 연결하고 다시 부팅을 시도합니다. 
+라즈베리파이에 랜선을 연결하고 다시 부팅을 시도합니다. 화면에 Eth0 IP 주소가 나올 것입니다.
 
- 
- 
+<img src="http://postfiles3.naver.net/MjAxNzExMjVfNjcg/MDAxNTExNTc1MDc4MTQ1.oKR_ysddiwLZSctXN9F2NvzLLzzgnPRo4t_mPZyr-9Ug.PKAqSQqQdBewjmhyzs0P1wo0nyLNlcfGSOkT_gpP908g.JPEG.akj61300/DSC_6031.jpg?type=w773" />
+
+이제 라즈베리파이3 와 개발 PC 를 같은 랜(공유기)에 접속하고 터미널에 다음 명령을 입력하세요.
+
+```bash
+adb connect $라즈베리파이_IP_주소
+```
+
+필자의 경우는 라즈베리파이3 의 IP 주소가 192.168.0.23 이므로 다음과 같이 입력합니다.
+
+```bash
+adb connect 192.168.0.23
+```
+
+<img src="http://postfiles4.naver.net/MjAxNzExMjVfNiAg/MDAxNTExNTc1Mzk5Mzcx.i_ExxrQm-37kbVAKEEGetQh1lfdOOagcm2fApZRa_fQg.UMh3keHlyzn8Wsq9fGtmrHa3fiMna_5ikwicIQXGVV4g.PNG.akj61300/adb_connect.png?type=w773" width="500px" />
+
+정상적으로 연결이 되었는지 확인하기 위해 다음 명령어를 터미널에 입력합니다.
+
+```bash
+adb devices
+```
+
+<img src="http://postfiles2.naver.net/MjAxNzExMjVfMTU4/MDAxNTExNTc1NDAxMjE1.HFt-o19QbYPapwHicnOAl-H9OTnt80KvPenMqc3hpTUg.4ozZ31giSnDhiREwP2sc5ruLRgW4TVox_pD2WRgHmBUg.PNG.akj61300/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2017-11-25_%EC%98%A4%EC%A0%84_11.02.22.png?type=w773" width="500px" />
+
+이제 ADB 가 연결되었기 때문에 평소 안드로이드 개발하듯이 라즈베리파이3 에 프로그램을 업로드 할수 있게 되었습니다.
+
 ## LED 를 켜기위한 회로를 만들자
 
+LED 를 라즈베리파이로 제어하기 위한 회로를 만들어보겠습니다. 먼저 LED 부품을 봐주세요.
+
+<img src="http://postfiles5.naver.net/MjAxNzExMjVfMjMz/MDAxNTExNTc2Njg1MjE5.zpYCK4wEc8QE-wej04SjSooT102a7n7TSELbSUyBVIQg.amNN_UhVPRjUNSuCI5-H2VV5UARDaPw9ckLEH6QIidAg.PNG.akj61300/led-cathode-anode.png?type=w773" />
+
+LED 구조중 눈여겨 봐야할 부분은 +, - 부분입니다. LED 를 자세히 보시면 한쪽이 길고 한쪽은 짧은것을 알수가 있습니다.
+
+
+다음은 BreadBoard(빵판) 을 보겠습니다. 빵판은 다음과 같이 전류가 흐르게 됩니다.
+
+* 빵판의 구조 설명할것(전류가 어떻게 흐르는지)
+* 전류가 어떻게 흐르는지 설명
 
 
 ## GND, 5V, GPIO 란?
+
 
 ## Android Studio 로 개발시작해보기
 
