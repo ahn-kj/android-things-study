@@ -369,7 +369,7 @@ Android Things 를 사용해서 간단한 LED 제어를 해보았습니다. 회�
 
 이 문서에서 작동되는 코드는 github 에 공유되어 있습니다. 다음 github 주소를 참조해주세요.
 
-[https://github.com/ahn-kj/android-things-study/tree/master/FirstAndroidThings](https://github.com/ahn-kj/android-things-study/tree/master/FirstAndroidThings)
+
 
 ## Next Step
 
