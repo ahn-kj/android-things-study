@@ -219,7 +219,7 @@ class MainActivity : Activity() {
 
 모듈 템플릿으로 phone & tablet 을 선택합니다. module 이름은 FirstThingsMobile 로 하겠습니다.
 
-<img src="http://postfiles8.naver.net/MjAxNzEyMDFfMjQ4/MDAxNTEyMDU3OTg5NjM2.B_7PvLIaL7yfY-6K-3YPDECkhKW2P5sbpk9UJjCzo1Ag.MQy_lYhReaUYYVaEKLKRxRr9WqHTxDl47qi010zUl6Mg.PNG.akj61300/new_mobile01.png?type=w773" /width="600px">
+<img src="http://postfiles8.naver.net/MjAxNzEyMDFfMjQ4/MDAxNTEyMDU3OTg5NjM2.B_7PvLIaL7yfY-6K-3YPDECkhKW2P5sbpk9UJjCzo1Ag.MQy_lYhReaUYYVaEKLKRxRr9WqHTxDl47qi010zUl6Mg.PNG.akj61300/new_mobile01.png?type=w773"  width="600px">
 
 다음화면에서는 EmptyActivity 를 선택하고 Activity 의 이름은 기본값으로 설정하여 모듈을 생성합니다. 좌측 네비게이터에서 모듈이 생성되었는지 확인해보세요. 다음화면처럼 모듈이 보여야 합니다.
 
