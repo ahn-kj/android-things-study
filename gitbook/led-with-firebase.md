@@ -316,10 +316,11 @@ class MainActivity : AppCompatActivity() {
 ## 참고소스
 
 참고소스는 GitHub 에 등록되어 있으며 링크는 다음과 같습니다.
-[]()
+
+[https://github.com/ahn-kj/android-things-study/tree/master/FirstAnroidThingsWithFirebase](https://github.com/ahn-kj/android-things-study/tree/master/FirstAnroidThingsWithFirebase)
 
 > google-services.json 은 포함되어 있지않으며 반드시 google-services.json 을 추가하고 실행하시기 바랍니다.
-> 
+
 
 ## Next Step
 

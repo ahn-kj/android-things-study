@@ -1,8 +1,10 @@
-# Android Things - 부팅부터 LED 제어까지
+# Android Things - Firebase 를 이용한 LED 제어
 
-이번 컨텐츠는 Android Things 를 이용해 라즈베리파이3 를 부팅해보고, LED 한개를 제어해보는 것이 목적입니다.
+이번 예제는 Firebase 를 연동하여 LED 한개를 원격으로 제어하는 예제입니다. 더불어 Android 스마트폰에서 어떻게 원격으로 LED 를 제어하는지 알아봅니다.
 
 ## 준비물
+
+준비물은 기존 [LED 제어 예제](https://c548adc0c815.gitbooks.io/iot-with-android-things/content/androidthings-controlled.html) 와 동일합니다.
 
 * Rassberry PI 3
 * Bread Board
@@ -12,265 +14,126 @@
 * 저항 220 옴
 * LED 1개
 
-<img src="http://postfiles4.naver.net/MjAxNzExMjVfMjc1/MDAxNTExNTY1MzcyMjg0.Q3vmIPsZGLomnmi9ISsqGm83HA1rjKYXsUfzJw8TE1sg.bTjZGkQ2o3yMBCHG9zMypCYw1n3HwSVI2Wq_yuffQ08g.PNG.akj61300/readt.png?type=w773" width="600px" />
+## 기존 소스가 필요합니다!
 
-## 라즈베리파이3 에 Android Things 이미지로 부팅해보기
+이 프로젝트는 시리즈물처럼 기존에 동작시킨 Android Things 로 LED 제어하기 와 이어지는 프로젝트입니다. 기존 코드와 문서도 참조해주세요.
 
-라즈베리파이 3 에 Android Things 로 부팅하기 위해서는 먼저 Android Things OS 로 부팅할 수 있는 SD 카드를 만들어야 합니다. 마치 PC 부팅을 위해서는 윈도우즈를 설치하는 것과 비슷합니다.
+[기존코드 및 문서 보기](https://github.com/ahn-kj/android-things-study/tree/master/FirstAndroidThings)
 
-Android Things 시스템 이미지를 다운로드 받기 위하여 Android Things 콘솔을 방문합니다.
+## Firebase 소개
 
-[https://partner.android.com/things/console](https://partner.android.com/things/console)
+Firebase 는 Google 이 제공하는 클라우드 기반 백엔드 기술로 최초에는 리얼타임 데이터베이스 기능을 주로 담당하였지만 발전을 거듭하여 현재에는 모바일 앱이 백엔드에 필요한 공통적인 기술 대부분을 지원합니다.  
+지원하는 기능들은 다음과 같습니다.(2017.11.27 일 기준 BETA 버전은 제외)
 
+|기능|설명|
+|:---:|:---|
+|실시간 데이터베이스|클라우드에 호스팅되는 noSQL 데이터 베이스로 데이터를 실시간으로 동기화 합니다.|
+|오류보고|앱이 비정상으로 종료되었을때 문제점을 보고 받아 앱의 전반적인 상태를 모니터링 합니다. |
+|인증|Email, Google, Facebook, Twitter, Github, 전화번호등 다양한 로그인 방법을 지원하고 안전한 인증방법을 제공합니다. |
+|Cloud Storage|Google 이 제공하는 클라우드 저장소에 이미지, 오디오, 동영상등의 컨텐츠를 저장하고 공유합니다. <br>CDN 서버와 비슷한 기능을 제공한다고 생각하면 됩니다.|
+|Android 용 Test Lab|Google 이 호스팅하는 가상 기기및 실제 기기에서 앱에 대해 자동 테스트 및 맞춤 테스트를 실행합니다.|
+|Google 애널리틱스|사용자 기여도와 행동을 분석하여 제품 로드맵의 의사결정 근거로 활용합니다. 맞춤분성르 위해 원시 이벤트 데이터를 보낼 수 있습니다.|
+|클라우드 메시징|Android, iOS, 웹 등 다양한 플랫폼에 푸쉬 알림을 무료로 보냅니다.|
+|동적 링크|딥 링크를 사용하여 iOS, Android, 웹에서 원하는 화면으로 보낼수 있는 스마트 URL 을 제공합니다.|
+|원격구성|각 사용자에게 앱이 표시되는 방식을 맞춤 설정합니다. 새버전을 배포하지 않아도 Firebas 콘솔에서 모양과 느낌에 변화를 주거나 기능을 단계적으로 출시 가능합니다.|
+|초대|추천코드, 즐겨찾는 콘첸츠까지 이메일 또는 SMS 를 통해 공유할 수 있도록 지원합니다.|
+|앱 색인 생성|구글 검색 통합으로 이미 앱을 설치한 사용자의 재참여를 유도합니다.|
+|AdMob|전세계 잠재고객에게 광고를 게재하여 수익을 창출합니다.|
+|애드워즈|Google 에 추천광고를 통해 사용자를 획득하고 유지합니다.|
 
-Android Things 는 기존에는 시스템 이미지를 직접 다운로드 하는 링크가 있었지만, 현재에는 웹에서 OTA 를 지원하기 위하여 웹 콘솔 형태로 변경되었습니다.
+Firebase 는 매년 Google IO 에서 새로 소개될 만큼 구글이 강력하게 지원하고 있는 서비스 중 하나입니다.  
+위 기능만 보아도 전부 활용할 수 있을까 라는 의문이 생길정도로 다양하는데 BETA 버전으로 지원하는 기계학습 기반 예측, 서버코드 없이 백엔드 코드를 삽입하는 클라우드 함수, 성능 모니터링등 곧 생길 서비스 역시 다양하고 강력합니다.
 
-Android Things Console 에 접속하면 다음 화면처럼 나올 것입니다. 프로덕트를 추가합니다.
+구글이 Firebase 로 추구하는 것은 모바일 앱 또는 웹 같은 프론트엔드 작업에서 공통적으로 사용하지만 골치 아플 수 있는 백엔드 기술을 Firebase 로 통합하여 쉬운 방법으로 제공하는 것입니다. 결국 앱 또는 웹 프론트 개발자가 자신의 아이디어에 보다 더 집중할 수 있게 만드는 것입니다. 
 
-<img src="http://postfiles16.naver.net/MjAxNzExMjVfMzAg/MDAxNTExNTY1OTk2MTE0.ic3iuTdY8w1gHK0Lh0DDiHgJRJm2bcGi5BcAZbltgFIg.OpuvLK67I3k-2ROPpV2h2VrV--N9_KOzTLl3r0T4dykg.PNG.akj61300/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2017-11-25_%EC%98%A4%EC%A0%84_8_24_51.png?type=w773" width="400px" />
+필자가 Firebase 를 실제 외주 개발에서 사용한 경험에 의하면 개발 작업기간은 체감상 2배이상 빠르게 진행되었습니다. 백엔드 서버개발을 하지않고 기능에 집중해 구현이 가능했기 때문입니다. 
 
-다음 팝업에서는 생성할 제품에 이름, SOM 타입 등을 설정하는 화면입니다. 제품이름에는 FirstThings, SOM Type 에는 라즈베리파이3 을 선택합니다.
+개발자 인력을 여러명 둘수 없고, 빠른 시간안에 기능을 구현해야하는 벤처회사에서는 Firebase 의 적극도입을 고려해볼만 합니다. Android Things 역시 Firebase 를 쉽게 사용가능하며, 이번 LED 제어에서는 Firebase 의 기능 중 실시간 데이터베이스 기능을 사용할 예정입니다.
 
-<img src="http://postfiles10.naver.net/MjAxNzExMjVfMjc5/MDAxNTExNTY2MTgzMTI5.t11LScBpOPKY3NhuTgt8MaDJzqu9F2X_ZAluy5s9Pcsg.5DHirxqyI28BFqh8hp8U4EC4gl9mx1EYSn8BZR_-zhUg.PNG.akj61300/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2017-11-25_%EC%98%A4%EC%A0%84_8.28.01.png?type=w773" width="400px" />
+## Firebase 설정하기
 
-Create 버튼으로 제품을 생성하면 제품 설정화면이 나오게 됩니다. 상단 탭에서 Factory Images 탭을 선택합니다.
+Firebase 는 구글 아이디가 있다면 바로 서비스 사용이 가능합니다. 구글에 로그인 후 Firebase 사이트에 접속하세요.
 
-<img src="http://postfiles9.naver.net/MjAxNzExMjVfMjI3/MDAxNTExNTY2Mzk4Njc3.8wLnoDuXvmjkA6AmPjmDtK4PXOTWldg0UFudQ1dxbmcg.aSy0lr-BKndQxe-Em5YFLxjUuJQWdPoOiPaDcD1oflcg.PNG.akj61300/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2017-11-25_%EC%98%A4%EC%A0%84_8_31_53.png?type=w773" />
+[https://firebase.google.com/](https://firebase.google.com/)
 
-Factory Images 하단에 Android Things 버전을 고르고 CREATE BUILD CONFIGURATION 을 클릭합니다.
+사이트에 접속 후 우측 상단 콘솔로이동을 클릭합니다.
 
-<img src="http://postfiles10.naver.net/MjAxNzExMjVfNjYg/MDAxNTExNTY2NjYyNDE4.SN4ioKSpiT0ks4XEs9qBSDrNSe89Cq8Veul9OvvMO8Qg.bAvCdwsUflzCVjqhx5e-ajvFZgLMp-jFPdvdiOpQx8Yg.PNG.akj61300/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2017-11-25_%EC%98%A4%EC%A0%84_8_34_45.png?type=w773" />
+<img src="http://postfiles3.naver.net/MjAxNzExMjdfMTM2/MDAxNTExNzk0MTYyNjcw.9MDoSW2-BlM9mPaVCimClWXsq2JKPmXOFuia7R1_1Swg.qPU1Kai7BEh8W0FimLTrRBuTZ0_vg-EE1ZqeCNRuCGsg.PNG.akj61300/gotoconsole.png?type=w773" width="500px" />
 
-조금 시간이 걸리고 작업이 완료되면 Build configuration list 항목이 새로 생긴 것을 확인할 수 있습니다. 리스트 항목 우측에 Download Build 버튼을 클릭합니다.
+프로젝트 추가 버튼을 누릅니다.
 
-<img src="http://postfiles2.naver.net/MjAxNzExMjVfMjQx/MDAxNTExNTY3MDUyMzg5.oATJ8lrknmMsAeXSg33paML0DmqyI2Go4Ec2nqDHhlAg.FAW5qAF7SSSeUBDqspcG54FHcwq0RyKA2cimj2-wN5kg.PNG.akj61300/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2017-11-25_%EC%98%A4%EC%A0%84_8_43_03.png?type=w773" />
+<img src="http://postfiles14.naver.net/MjAxNzExMjdfMjA5/MDAxNTExNzk0NTQ5MjI3.nJKsnn9diwdWeKwoOIpRV1oPU0-p2xt9T1sCfAtZwfwg.nXTHjaZkBqSIT_Hjvr7wqQUoA20TMyPlTROeCow3sP0g.PNG.akj61300/add_prj.png?type=w773" width="250px"/>
 
-다운로드가 끝나면 이제 다운로드 받은 이미지로 SDCARD 를 구울 차례입니다. 이미지를 굽기 위해서 [Etcher](https://etcher.io/) 라는 프로그램을 추천합니다. 윈도우, OSX, 리눅스 모든 플랫폼에서 사용가능하고 사용방법이 매우 간단합니다. Etcher 을 다운로드 하기 위해 Etcher 홈페이지를 방문합니다.
+프로젝트 이름을 android-things 로 합니다. 물론 프로젝트 이름은 바꾸어도 전혀 문제가 없습니다. 또 국가/지역을 선택할 수 있는데 대한민국 역시 선택이 가능하므로 대한민국을 선택하겠습니다.
 
-[https://etcher.io/](https://etcher.io/)
+<img src="http://postfiles11.naver.net/MjAxNzExMjdfODIg/MDAxNTExNzk0NjczNDY2.eICKscc_OhyHD_gtzNjAb000-hal566HHJlVvULixOIg.g2bOqu4tDbteqa9ifem2IZxFbrac-IExUqGVLZr6tg4g.PNG.akj61300/add_prj02.png?type=w773" width="300px"/>
 
-Etcher 홈페이지에 방문하여 운영체제에 맞는 버전을 다운로드 합니다.
+프로젝트를 생성하면 대시보드 화면으로 이동하게 되는데 여기서 Android 앱에 Firebase 추가 버튼을 누릅니다.
 
-<img src="http://postfiles7.naver.net/MjAxNzExMjVfMjgx/MDAxNTExNTY3NDQ1MTQ3.F3-78_2Pe9kLTPywamOMy89685yjuGQ0ptjPnAEOjgIg.K0N13iP5eGmDGrka6f19BdCHIWNR5XD3ZL4aA6WimVUg.PNG.akj61300/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2017-11-25_%EC%98%A4%EC%A0%84_8_47_55.png?type=w773" /> 
+<img src="http://postfiles16.naver.net/MjAxNzExMjhfMjky/MDAxNTExNzk2OTIwMTU0.hnSYUriM0WhyHD0ba2APyxt2wZ9iKQKTHTik2IN6oLgg.AKlATZtj2ARmPdDv1f_r8_OUVCRXCfd1d2LNU_Ie218g.PNG.akj61300/dashboard.png?type=w773" width="500px" />
 
-다운로드 및 설치가 완료되면 Etcher 를 실행하세요. Etcher 사용법은 간단합니다. 구울 이미지를 선택하고 어디에 구울지 선택하면 됩니다. 먼저 Select Image 버튼을 누르고 조금전에 다운로드 한 Android Things 이미지 압축파일을 선택하세요.
+다음 화면에서는 안드로이드 앱의 패키지이름을 넣어야합니다. Android Studio 에서 패키지 이름을 확인하고 넣도록 합시다. 기존 프로젝트를 그대로 이용한다면 패키지 이름은 다음과 같이 입력합니다.
 
-<img src="http://postfiles5.naver.net/MjAxNzExMjVfMzMg/MDAxNTExNTY4MTA4NjM1._VnoyNxjS2SzZoPJrXaRwbEfc_C9GoC56Ox0WdOAsPUg.te_t73Nc2weMXnhlUk2zNdRZCx2t4sHaeX8SV73JUPEg.GIF.akj61300/11%EC%9B%94-25-2017_09-01-18.gif?type=w773" width="320px" />
+<img src="http://postfiles4.naver.net/MjAxNzExMjhfMjM4/MDAxNTExODAwMDI1NTk5.CC8iORY708wgnQ6KfDIDwFBxr87rgce3tr9FmdsyMd8g.s6rihgZaC-iUNbNeUTmVgvGv_NDjlKMk5ZB8W1n5atog.PNG.akj61300/fire_android01.png?type=w773" width="500px" />
 
-PC 에 micro SD 카드를 연결하세요. 필자의 경우 맥북에 micro sd 카드를 바로 인식시킬수 없어 SD 카드 어댑터를 사용했습니다. 어떤 형태로든 Micro SD 카드를 인식할수 있으면 됩니다. 
+패키지 이름을 제외하고 나머지는 선택사항이므로 일단 앱등록 버튼을 누릅니다. 그리고 다음화면에서 다운로드 google-services.json 파일 버튼을 누릅니다.
 
-Etcher 은 외장 디스크가 하나인 경우 그것을 자동으로 선택합니다. 만약 다른 드라이브에 이미지를 구워야 한다면 change 버튼을 눌러 드라이브를 변경합니다.
+<img src="http://postfiles9.naver.net/MjAxNzExMjhfMTM2/MDAxNTExODAwNjczODI1.MKcbSe_DoO-lTeBz4l0CjT4KMo5jc6Kbf9TVBbwcxI8g.a-C3LvmngECUfm7O4uuPKHgHI_p72-938cuykzwYCM8g.PNG.akj61300/fireabase022.png?type=w773" width="500px"/>
 
-<img src="http://postfiles3.naver.net/MjAxNzExMjVfMTcw/MDAxNTExNTY5Mjg2ODY4.a5u6hXcB3wrerSVdSxnz51ZxrfeVGjRPm8TQ9PAiJKUg.0NekZO19b9eZuXEfp_h5SFe9maD5SvxIN5T85CiSo0kg.PNG.akj61300/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2017-11-25_%EC%98%A4%EC%A0%84_9_20_02.png?type=w773" />
+Android Studio 에서 기존 LED 제어 프로젝트를 열고 google-services.json 파일을 프로젝트의 app 루트 경로에 복사합니다.
 
-이미지와 드라이브 선택이 완료되었다면 이제 Flash 버튼으로 이미지를 굽기만 하면됩니다.
+<img src="http://postfiles2.naver.net/MjAxNzExMjhfOTkg/MDAxNTExODAwOTQ2OTM3.pw8xUgos79zAlue7Gy3f-K8OrudVGDOOrcWaBwEDZ1Yg.YqTg58cWgKHF4-W7p4m4M1vUvb1abtP1MBdD0y1PN28g.PNG.akj61300/app-gsj.png?type=w773" width="300px"/>
 
-<img src="http://postfiles5.naver.net/MjAxNzExMjVfMTg3/MDAxNTExNTY5MzYxNjE1.sA__8niS2XlbRBIk0mMuvjhhIUrbG_phqPMrwvFDfFQg.7vnOqCd0IX9LcMS98FXne45NRQqcjUt3S8QBGIbbI8sg.PNG.akj61300/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2017-11-25_%EC%98%A4%EC%A0%84_9_20_02.png?type=w773" />
+그 다음은 파이어베이스의 의존성 추가를 할 차례입니다. 프로젝트 단위의 build.gradle 파일을 다음과 같이 수정하세요.
 
-이미지를 굽는 작업은 컴퓨터 성능에 따라 시간이 상당히 걸릴수 있습니다. 차라도 한잔 마시면서 기다리면 됩니다.
-
-이미지를 Micro SD 카드에 굽는 과정이 완료되었다면 이제 라즈베리파이에 Micro SD 카드를 마운트하면 됩니다.
-
-라즈베리파이를 잘살펴보면 Micro SD 카드를 마운트 할것처럼 생긴 곳이 있습니다. 보통의 경우에는 USB 포트 반대편 쪽에 뒤집은 위치에 있습니다. 보드의 적혀있는 영어를 잘살펴보면 MICRO SD CARD 라고 적혀있습니다.
-
-<img src="http://postfiles10.naver.net/MjAxNzExMjVfMjMz/MDAxNTExNTcwOTA0ODM1.FdRRtO17DvraQW5IRCOYwWUXqrcIUSqrW-l3Y6aLmtIg.rsNxOe8hrsevET-FpabJkbQjvQssFBXhfMxqXQ7zaXwg.PNG.akj61300/DSC_6025.png?type=w773" width="500px"/>
-
-Micro SD 카드를 라즈베리파이 3 에 방향을 잘 맞춰서 마운트해주세요.
-
-<img src="http://postfiles5.naver.net/MjAxNzExMjVfMjMz/MDAxNTExNTcxNDExMzg2.XIgByeegxnYtjQ8pDNR8zJajqDo7efiJTW0KCa_pZ_Yg.__2hHxsmBuaL1Vf2pkbKIv70-tk-Weyr0AC1jFCK03Eg.JPEG.akj61300/DSC_6026.jpg?type=w773" width="500px" />
-
-이제 라즈베리파이3 를 부팅하면 됩니다. 화면을 보기위하여 HDMI 로 모니터에 연결하고 부팅해보겠습니다.
-
-모니터에 다음과 같은 화면이 나온다면 정상적으로 모든것이 진행된 것입니다.
-
-<img src="http://postfiles14.naver.net/MjAxNzExMjVfMTY0/MDAxNTExNTcxOTMxMjA0.kyOXjPWF7EfR01tIwWtFydq7wrXUOBNZ94h2ErO4U1Eg.YZPrJw_YA1DnQU7Fwre3jl3NwjWD0qfb0RyzwAb_Rhgg.JPEG.akj61300/DSC_6029.jpg?type=w773" />
-
-## 개발환경을 설정하자
-
-Android Things 는 다른 안드로이드 개발을 할때 처럼 ADB 라는 툴을 이용해 디바이스와 연결하고 프로그램을 설치합니다. 
-
-그렇기 때문에 Android Things 역시 ADB 연결을 해야만 개발을 시작할 수 있습니다. 이제 어떻게 ADB 를 라즈베리파이 3와 연결할 수 있는지 살펴보겠습니다.
-
-> 여기서 ADB 의 설치방법을 다루지는 않겠습니다. 구글에 안드로이드 개발환경 설정을 검색하여 ADB 및 안드로이드 개발환경 설정을 해주세요.
-
-먼저 라즈베리파이에 다른 안드로이드 기기처럼 USB 로 ADB 연결을 가능하게 하는 5핀 케이블 포트를 찾아보세요. 딱 한개 보이긴 하지만 그것은 전원으로 사용합니다.
-
-딱히 ADB 로 사용할 포트가 없으니 USB 말고 다른 ADB 연결 방법을 사용하는 것이 편리합니다. 다른 연결방법이라는 것은 바로 ADB 의 TCP 모드입니다.
-
-Android Things 는 ADBD(ADB 데몬) 가 기본적으로 TCP 모드로 동작되게 설계되어 있습니다.(보통의 경우에는 TCP 모드가 부팅하자마자 동작하지는 않습니다) 
-
-즉 Android Things 디바이스에 이더넷 케이블을 꼽고 ADB TCP 연결을 하면 된다는 이야기입니다.
-
-라즈베리파이에 랜선을 연결하고 다시 부팅을 시도합니다. 화면에 Eth0 IP 주소가 나올 것입니다.
-
-<img src="http://postfiles3.naver.net/MjAxNzExMjVfNjcg/MDAxNTExNTc1MDc4MTQ1.oKR_ysddiwLZSctXN9F2NvzLLzzgnPRo4t_mPZyr-9Ug.PKAqSQqQdBewjmhyzs0P1wo0nyLNlcfGSOkT_gpP908g.JPEG.akj61300/DSC_6031.jpg?type=w773" />
-
-이제 라즈베리파이3 와 개발 PC 를 같은 랜(공유기)에 접속하고 터미널에 다음 명령을 입력하세요.
-
-```bash
-adb connect $라즈베리파이_IP_주소
-```
-
-필자의 경우는 라즈베리파이3 의 IP 주소가 192.168.0.23 이므로 다음과 같이 입력합니다.
-
-```bash
-adb connect 192.168.0.23
-```
-
-<img src="http://postfiles4.naver.net/MjAxNzExMjVfNiAg/MDAxNTExNTc1Mzk5Mzcx.i_ExxrQm-37kbVAKEEGetQh1lfdOOagcm2fApZRa_fQg.UMh3keHlyzn8Wsq9fGtmrHa3fiMna_5ikwicIQXGVV4g.PNG.akj61300/adb_connect.png?type=w773" width="500px" />
-
-정상적으로 연결이 되었는지 확인하기 위해 다음 명령어를 터미널에 입력합니다.
-
-```bash
-adb devices
-```
-
-<img src="http://postfiles2.naver.net/MjAxNzExMjVfMTU4/MDAxNTExNTc1NDAxMjE1.HFt-o19QbYPapwHicnOAl-H9OTnt80KvPenMqc3hpTUg.4ozZ31giSnDhiREwP2sc5ruLRgW4TVox_pD2WRgHmBUg.PNG.akj61300/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2017-11-25_%EC%98%A4%EC%A0%84_11.02.22.png?type=w773" width="500px" />
-
-이제 ADB 가 연결되었기 때문에 평소 안드로이드 개발하듯이 라즈베리파이3 에 프로그램을 업로드 할수 있게 되었습니다.
-
-## LED 를 켜기위한 회로를 만들자
-
-LED 를 라즈베리파이로 제어하기 위한 회로를 만들어보겠습니다. 먼저 LED 의 구조를 보면 다음과 같습니다.
-
-<img src="http://postfiles5.naver.net/MjAxNzExMjVfMjMz/MDAxNTExNTc2Njg1MjE5.zpYCK4wEc8QE-wej04SjSooT102a7n7TSELbSUyBVIQg.amNN_UhVPRjUNSuCI5-H2VV5UARDaPw9ckLEH6QIidAg.PNG.akj61300/led-cathode-anode.png?type=w773" />
-
-꽤 복잡한 구조이지만 사실 모두 알 필요는 없습니다. 오히려 LED 구조중 눈여겨 봐야할 부분은 +, - 부분입니다. LED 를 자세히 보시면 한쪽이 길고 한쪽은 짧은것을 알수가 있습니다. 긴 쪽에 + 극을 연결해야하며, 짧은 쪽에 - 극을 연결해야 합니다.
-
-<img src="http://postfiles9.naver.net/MjAxNzExMjZfMjcz/MDAxNTExNjM0Nzg2NDEz.P9mBdynwjTazZqPDfssvsOozAiPjK9NJxW_T8n4p85wg.lemKLykvqH0q3MEfDCupbUve7x5h0lMWWUJna3oCCw0g.PNG.akj61300/led_1.png?type=w773" width="150px" />
-
-다음은 BreadBoard(빵판) 을 보겠습니다. 빵판을 보시면 구역이 나눠져 있는것을 알 수 있습니다. 구역이 나눠진 이유는 구역별로 흐르는 전류가 공유되기 때문입니다.
-
-예를 들어 다음과 같이 전기가 연결되어 있는 경우를 생각해보겠습니다.
-
-<img src="http://postfiles4.naver.net/MjAxNzExMjZfMTYx/MDAxNTExNjM2Mjk1ODk0.hU8-3ZexnXn58J4g8hSTRn2Wv36L-lkmJBVuDqnYmvAg.BAGDB7HV0iJhsoA7j90gebVnAmePAtz33mkJrUaDxxsg.PNG.akj61300/bread02.png?type=w773" width="400px" />
-
-건전지의 양(+)극이 빵판 좌측 첫번째 칸에 연결되어 있습니다. 그렇다면 그림의 빨간 색으로 색칠된 영역에는 전부 + 극 전류가 흐르게 됩니다. 음(-)극이 연결 된 빵판 우측 6번째 칸에는 초록색 영역 전부 음극이 연결된것입니다.
-
-또 가장 측면에 있는 영역은 보통 +, - 극 전원 전용으로 쓰입니다. 이 영역은 세로로 전류가 공유됩니다. 예를 들어 건전지가 다음과 같이 연결되어 있는 경우를 보겠습니다.
-
-<img src="http://postfiles6.naver.net/MjAxNzExMjZfMjg2/MDAxNTExNjM2ODMyMDQ0.7KiEL05rq8pKPM2k_I25PXjE0MvByIXgf1jH9FwB4ccg.JUsOXd8vlXWGL4ekDO38deYdAryD_oZeHIVOPb-Ae9sg.PNG.akj61300/bread03.png?type=w773" width="400px" />
-
-건전지의 + 극이 좌측 첫번째 칸에 연결되어 있습니다. 이런 경우에 빨간색으로 색칠되어진 모든 칸이 전부 + 극이 됩니다. 건전지의 - 극 마찬가지로 초록색 영역전부가 - 극이 됩니다. 즉 세로로 전류가 공유됩니다.
-
-다음은 라즈베리파이의 PIN 정보를 보겠습니다. 라즈베리파이의 핀정보는 [https://pinout.xyz/](https://pinout.xyz/) 에 자세하게 나와있습니다.
-
-<img src="http://postfiles15.naver.net/MjAxNzExMjZfMjQ3/MDAxNTExNjM3MjU3MzQw.wgDFYrrtk4Fal4CjKP72P4nLsQ0rpuVJTlYoATNHqCQg.9X8EOXxdYX9Du_WUAJXG2cT8ebmeg7iOkboNOL0RoQUg.PNG.akj61300/pinout01.png?type=w773" width="400px" />
-
-여기서 사용할 핀은 Ground 와 GPIO 핀인 BCM6 핀입니다.
-
-<img src="http://postfiles4.naver.net/MjAxNzExMjZfMjc5/MDAxNTExNjM3NTk0NDg1.cW0RAHr7ekPtfyEcWz-Yaf8cZub9NCJQAOgDkW_BBcgg.YmL9v7XNnlG2f5mN2OO7zLUolqjBn7BRSrvH7EtSW9Qg.JPEG.akj61300/pinout02.jpg?type=w773" width="400px" />
-
-6번 Ground 핀과 31번 BCM6 핀에 M/F 점퍼케이블을 연결하고 빵판에 다음과 같이 연결합니다.
-
-<img src="http://postfiles8.naver.net/MjAxNzExMjZfMjQ1/MDAxNTExNjM3OTgzMzU1.sweMC6xZXGJimVACyInxw6A0jHwO3ZFWLfy9pmiAMLEg.aq_sqFlOHOMPc_ELqUVvUdBAKSeTw19SXyGDkTDr4hwg.JPEG.akj61300/Circuit01.jpg?type=w773" width="400px" />
-
-라즈베리파이의 핀을 정확하게 연결하고 빵판에 전류가 흐를수 있게 연결되는 것이 중요합니다. 또 LED 의 +, - 극도 잘 확인하고 연결하는게 좋습니다. 실제로 필자가 스터디할때 다른 부분보다 회로를 만드는 부분에서 삽질이 많았습니다.
-
-회로를 연결한 실제 사진입니다.
-
-<img src="http://postfiles1.naver.net/MjAxNzExMjZfMTAz/MDAxNTExNjQyMjMwNzQ3.kG2a1lhbeIT-gPeOjOn0XyTbwxgfsgZcm_qir6k74PIg.r4kT3TWUFMJMGisTqYrnQxLvb25Hq02YkMRzm9BkVCQg.JPEG.akj61300/DSC_6034.jpg?type=w773" width="600px" />
-
-## GROUND(GND), GPIO 란?
-
-앞서 회로를 연결하며 라즈베리파이의 핀아웃으로 GPIO 와 GROUND 를 연결한다고 하였는데 이것들이 무엇인지 잠시 살펴보도록 하겠습니다.
-
-|용어|설명|
-|:--|:--|
-|GROUND(GND)| 흔히 회로에서 음(-)극을 나타냅니다. 보다 정확하게 표현한다면 전기회로에서 기준전위를 나타냅니다. 예를 들어 5V 는 GND 보다 5V 만큼 높다는 의미입니다. 음(-) 극을 GROUND 라고 부르는 것은, 기준 전위가 지구의 땅의 전위를 기준으로 잡기 때문입니다. |
-| GPIO | General Purpose Input/Ouput 의 줄임말입니다. 말 그대로 핀의 출력을 조절할수가 있습니다. 예를 들어 핀의 출력을 0V 또는 3.3V 로 조절할 수 있습니다. 또 입력모드로 사용하는 경우 핀에 0V 가 걸리는 경우와 3.3V 가 걸리는 경우를 구분하여 판단할 수 있습니다. |
-
-전기회로에서 전기는 전위차에 의해 흐르게 됩니다. GND 는 기준전위를 나타내기 때문에 음극(-) 으로 사용하는 것입니다. 
-
-GPIO 는 핀의 출력을 프로그래밍으로 0V 또는 3.3V 로  조절이 가능합니다. 따라서 이번 LED 제어 프로그램에서 GPIO 의 출력을 조절하면서 LED 를 제어할 예정입니다. 
-
-## Android Studio 로 Android Things 프로젝트를 생성해보자
-
-이제 Android Studio 로 LED 제어 프로그램을 만들어보겠습니다. 안드로이드 스튜디오에서 프로젝트를 새로 생성합니다. 생성하는 화면에서 어플리케이션 이름을 FirstAndroidThings, Company Domain 은 유니크한 것으로 만들고, Kotlin 지원을 체크해주세요.
-
-<img src="http://postfiles4.naver.net/MjAxNzExMjZfNjgg/MDAxNTExNjQyNDYzNjAx.0p677JFPXojA_EdyDJpiMItMVrGe6G6r27VDBiacMLAg.616H1C9LD41ema0XrvkpWdhbjkFsaEyEp_TqWvjMG9Ag.PNG.akj61300/new_prj01.png?type=w773" />
-
-저의 경우는 Kotlin 이 익숙하기 때문에 Kotlin 을 선택하였지만 Android Things 를 하기위해 반드시 Kotlin 을 사용해아 하는 것은 아닙니다. Java 가 편한 경우 Java 로 프로그램을 작성해도 똑같은 일을 할 수가 있습니다.
-
-다음 화면에서는 어플리케이션이 실행될 플랫폼을 고르는 화면입니다. Android Studio 3.0 부터는 Android Things 가 아예 IDE 차원에서 지원이됩니다. 플랫폼을 Phone 체크를 해제하고 Android Things 를 선택합니다.
-
-<img src="http://postfiles2.naver.net/MjAxNzExMjZfMTc2/MDAxNTExNjQyNzMzNzQ0.BXXa11BRgoGLPrQMjOtoBInt8ms5Fp-lReSyLwCCFhYg.PXZ79Pv2zChBzkcpj_vMO_iRGPmGlfNLZlhYO61rDJIg.PNG.akj61300/new_prj02.png?type=w773" />
-
-다음 화면에서는 Android Things Empty Activity 를 선택하고 그 다음 화면인 액티비티 이름 설정에서는 기본값을 그대로 선택하여 프로젝트 생성을 완료합니다.
-
-<img src="http://postfiles6.naver.net/MjAxNzExMjZfMTQ2/MDAxNTExNjQzMTIzMTc1.SvenLWBNoQgmddQH1laxgNKo2_dwt6kQ0ydfZB3PLjIg.IfKaTh_sEY_M-Gr6rh9FGF5oLoJTp7bqjF6t2NjL__Ig.PNG.akj61300/new_prj03.png?type=w773" //>
-
-Android Things 플랫폼이 Android Studio 에서 통합지원되면서 개발을 위해 해야할일은 대폭 줄어들었습니다. 예를 들면 기존에는 Android Things 개발을 위해 라이브러리 의존성을 build.gradle 에 추가하고 AndroidManifest.xml 을 수정하는 등 부가적인 작업들이 필요했습니다.
-
-지금은 안드로이드 스튜디오가 그런 부가적인 것들을 자동으로 해주기 때문에 특별히 신경 쓸 필요는 없지만, 다른 안드로이드 모듈과 어떻게 다른지 알아보기 위해 차이점을 잠깐 살펴보도록 하겠습니다.
-
-먼저 build.gradle 파일을 보도록 하겠습니다.
 
 ```groovy
-dependencies {
+buildscript {
     ...
-    compileOnly 'com.google.android.things:androidthings:+'
-    ...
+    dependencies {
+        ...
+        classpath 'com.google.gms:google-services:3.1.0'
+        ...
+    }
 }
 ```
 
-build.gradle 파일에 android things 라이브러리가 의존성이 추가되어있습니다. compileOnly 는 기존에 provided 와 비슷합니다. Complile 때 클래스패스를 참조하지만 런타임시에는 class 파일을 포함하지 않습니다. 
+그리고 모듈의 있는 build.gradle 파일에 다음과같이 수정하세요.
 
-그 이유는 android-things 라이브러리는 android-things 디바이스에 시스템 라이브러리로 존재하기 때문입니다. 굳이 어플리케이션이 라이브러리의 class 까지 포함할 필요가 없기 때문인 것이죠.
+```groovy
 
-다음에 확인해볼 파일은 AndroidManifest.xml 파일 입니다.
+dependencies {
+   ...
+    implementation 'com.google.firebase:firebase-core:11.6.0'
+    implementation 'com.google.firebase:firebase-database:11.6.0'
+}
 
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.akj.firstandroidthings">
+apply plugin: 'com.google.gms.google-services'
 
-    <application>
-        <uses-library android:name="com.google.android.things" />
-
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.IOT_LAUNCHER" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-    </application>
-
-</manifest>
 ```
 
-AndroidManifest.xml 파일에서 일반적인 안드로이드 프로젝트와 다른 부분은 uses-library 부분과 Intent Filter 부분입니다.
+클라이언트쪽 설정은 이것으로 끝입니다. 이제 Firebase 에 데이터를 추가해보겠습니다. 웹에서 Firebase 콘솔에 접속한뒤 좌측에서 Realtime Database 를 클릭하고 시작하기를 누릅니다.
 
-```xml
-<uses-library android:name="com.google.android.things" />
-```
+<img src="http://postfiles10.naver.net/MjAxNzEyMDFfMTk0/MDAxNTEyMDU2NDA5Nzg3.eqfbs7p2UZ7oQGqERH9x2mFaVw6XDecLKpKadwX-Eecg.wsXIcdyE4ZOIlo4oyPuVB7Q5_tZURhEcL0uDEc__vk0g.PNG.akj61300/database01.png?type=w773" width="600px" />
 
-uses-library 는 앱이 링크되어야 할 공유 라이브러리를 시스템에 알리는 역할을 합니다. 앞서 android-things 라이브러리는 compleOnly 로 작동한다고 하였습니다. 그렇기 때문에 런타임시에는 시스템에 android-things 라이브러리와 링크되어야 하기 때문입니다.
+데이터에 + 를 눌러 새 데이터를 추가합니다.
 
-```xml
-<category android:name="android.intent.category.IOT_LAUNCHER" />
-```
+<img src="http://postfiles2.naver.net/MjAxNzEyMDFfMjY5/MDAxNTEyMDU2NjQ5MjAx.isEGPm5bwurofk5wcuhW8-GougVnC5LZIbufIeePqtsg.6j-hXho3iPCp2O7oLmVA5dC86P_QPVfocaa29M-w0TMg.PNG.akj61300/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2017-12-01_%EC%98%A4%EC%A0%84_12.43.41.png?type=w773" width="400px" />
 
-인텐트 필터의 category 는 인텐트를 처리해야 하는 구성 요소의 종류에 관한 추가 정보를 담은 것입니다. 여기서는 IOT_LAUNCHER 이라는 추가정보를 가지고 있습니다. 
+데이터의 이름은 bcm6 gpio 를 제어할 것이므로 bcm6 으로 하겠습니다. 값을 on 으로 설정합니다.
 
-IOT 는 특성상 부팅후 하나의 앱이 자동으로 실행될 필요가 있습니다. 하나의 앱이 진입점(Entry Point) 으로서 작동되어야 하는것이죠. 
+<img src="http://postfiles9.naver.net/MjAxNzEyMDFfMTU0/MDAxNTEyMDU2NzgxNTM5.afZ4BYCRD_9ih_uTH9lAYQZw2ukFqselY4cvPLbiu1cg.YOhU-91lPa4Sryj259QazIk_B9DkhBLCDfL4UIFV1iwg.PNG.akj61300/add_bcm.png?type=w773" width="500px" />
 
-category.IOT_LAUNCHER 는 앱의 구성요소를 부팅시 자동으로 실행되는 진입점으로 설정하는 역할을 합니다. 
+다음에는 Firebase 의 권한설정을 해주어야 합니다. Firebase 의 모든 데이터는 읽기, 쓰기 모두 [auth != null] 이 기본값입니다. 인증이 성공한 유저에게만 허용한다는 것이죠. 테스트를 위해 읽기 권한을 true 로 바꾸고 게시 버튼을 클릭합니다.
 
-위 두가지 차이점이 Android Things 프로젝트를 결정짓는 사항입니다. 실제로 일반 안드로이드 프로젝트를 생성하고 build.gradle 에 라이브러리 의존성을 추가하고 AndroidManifest.xml 을 수정하면 Android Things 를 개발 할 수 있습니다.
+<img src="http://postfiles1.naver.net/MjAxNzEyMDFfNjkg/MDAxNTEyMDU2OTU2MzE2.BaVDxvM-Bis3P2IRsFJpLER7vmVtFs1qpsnNmsRKY3Mg.oi_6FEwOySQL_l2--D9bzQ-Q2yT4szPYIxIUVZPIwyIg.PNG.akj61300/rule01.png?type=w773" />
 
-이제 Android Things 프로젝트를 만들어봤으니 LED 를 제어하는 코드를 작성하도록 하겠습니다.
+이제 모든 설정은 끝났으니 코드를 작성하면 됩니다.
 
-## LED 제어 코드 작성해보기
 
-이제 MainActivty.kt 파일을 열고 LED 를 제어하는 코드를 작성해보겠습니다.
+## Firebase 에서 데이터 읽어 LED 제어하기
+
+Firebase 에서 데이터를 읽어오기 위해 MainActicity.kt 소스를 다음과 같이 변경하겠습니다.
 
 ```kotlin
 package com.akj.firstandroidthings
@@ -280,6 +143,10 @@ import android.os.Bundle
 import android.util.Log
 import com.google.android.things.pio.Gpio
 import com.google.android.things.pio.PeripheralManagerService
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.io.IOException
 import java.util.*
 import kotlin.concurrent.schedule
@@ -289,25 +156,19 @@ class MainActivity : Activity() {
     val TAG = "MainActivity"
 
     /**
-     * LED 를 On / Off 할 딜레이
-     */
-    val delay = 1000L
-
-    /**
      * GPIO(General-purpose input/output) 의 이름.
      */
     val gpioName = "BCM6"
 
     /**
-     * 안드로이드 타이머
-     */
-    val timer:Timer = Timer()
-    val timerTask:TimerTask? = null
-
-    /**
      * GPIO 인스턴스
      */
     var gpio: Gpio? = null
+
+    /**
+     * Firebase Reference
+     */
+    val database = FirebaseDatabase.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -326,51 +187,141 @@ class MainActivity : Activity() {
             // DIRECTION_OUT_INITIALLY_LOW 는 GPIO 를 출력모드로 설정
             gpio?.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
 
-            // LED 를 ON/OFF 하는 타이머 시작
-            timer.schedule(0, delay, {
-                gpio?.let { gpio ->
-                    // gpio 의 값을 현재값의 반대로 설정
-                    gpio.value = !gpio.value
-                }
-            })
+            gpio?.let { gpio ->
+                // Firebase 에서 bcm6 경로를 읽어온다.
+                database.child("bcm6").addValueEventListener(object:ValueEventListener{
+                    override fun onCancelled(error: DatabaseError?) {
+                    }
+
+                    override fun onDataChange(snapshot: DataSnapshot?) {
+                        // Firebase 의 bcm6 데이터가 on 이면 LED 를 켜고 그렇지 않으면 끈다.
+                        gpio.value = "on".equals(snapshot?.value.toString())
+                    }
+                })
+            }
 
         } catch (e: IOException) {
             Log.e(TAG, "Error on PeripheralIO API", e);
         }
     }
 }
+
 ```
 
-코드에서 핵심부분은 42번째 라인부터입니다.
+
+앱을 빌드후 라즈베리파이에서 실행해보세요. Firebase 의 bcm6 데이터가 on 이면 LED 가 켜지고, on 이 아니면 LED 가 꺼지는 것을 확인 가능합니다.
+
+큰 어려움 없이 원격으로 웹에서 LED 제어를 성공한 셈입니다.
+
+## 안드로이드 스마트폰용 앱 생성 및 설정
+
+지금까지는 Firebase 웹 콘솔에서 LED 를 제어했으니 더 나아가 안드로이드 스마트폰에서 LED 를 제어해보겠습니다. 안드로이드 스튜디오에서 file --> new --> new module 을 선택하세요.
+
+모듈 템플릿으로 phone & tablet 을 선택합니다. module 이름은 FirstThingsMobile 로 하겠습니다.
+
+<img src="http://postfiles8.naver.net/MjAxNzEyMDFfMjQ4/MDAxNTEyMDU3OTg5NjM2.B_7PvLIaL7yfY-6K-3YPDECkhKW2P5sbpk9UJjCzo1Ag.MQy_lYhReaUYYVaEKLKRxRr9WqHTxDl47qi010zUl6Mg.PNG.akj61300/new_mobile01.png?type=w773" /width="600px">
+
+다음화면에서는 EmptyActivity 를 선택하고 Activity 의 이름은 기본값으로 설정하여 모듈을 생성합니다. 좌측 네비게이터에서 모듈이 생성되었는지 확인해보세요. 다음화면처럼 모듈이 보여야 합니다.
+
+<img src="http://postfiles12.naver.net/MjAxNzEyMDFfMjU3/MDAxNTEyMDU4MjI4NzMw.vh6NkKH5wkFN37Fiv_bgJ7dZKaZGTJogyWWpg20HDhAg.z_IFJfXJdz9YOGjvcauJ6h1Akxt6wAcsPb7S9DLrZcMg.PNG.akj61300/module02.png?type=w773" width="400px" />
+
+스마트폰용 모듈 역시 Firebase 관련 설정은 똑같습니다 모듈의 build.gradle 파일을 다음과 같이 변경하세요.
+
+```groovy
+dependencies {
+    ...
+   implementation 'com.google.firebase:firebase-core:11.6.0'
+    implementation 'com.google.firebase:firebase-database:11.6.0'
+}
+
+apply plugin: 'com.google.gms.google-services'
+```
+
+기존에 Firebase 는 안드로이드 앱중 com.akj.firstandroidthings 패키지만 사용을 허가했기 때문에 새로운 모듈에서는 사용할 수가 없습니다. 웹에 접속하여 Firebase 에 새 안드로이드 앱을 추가합니다.
+
+<img src="http://postfiles16.naver.net/MjAxNzEyMDFfMTcg/MDAxNTEyMDU5NDI1OTAx.aLjnpBJF2nLoLTXeHres7qOy8hVWmybfGb3rIcWFz98g.cAQvX4-O9jk0RrnKQgdAc2-V7vzc0rohxoJDiIdxGy0g.PNG.akj61300/other_app01.png?type=w773" />
+
+다음 스텝 역시 기존과 동일합니다. 다른것이 있다면 패키지 이름을 모바일 모듈로 생성한 패키지 이름을 사용한다는 것입니다.
+
+<img src="http://postfiles6.naver.net/MjAxNzEyMDFfMjE3/MDAxNTEyMDU5NjU1Mjkx._N__00g5Sn41G7ONWoOPaXP8mQGmFlbkduBKS5Sf5iAg.36A3Uoad1hsKG42buenIBzyJZUyaicwpbMZhiMDAgQ0g.PNG.akj61300/reg20.png?type=w773" width="450px" />
+
+나머지는 선택사항이므로 앱등록을 누르고 google-services.json 을 다운로드 합니다. 라즈베리파이 모듈을 만들때와 마찬가지로 모듈 루트 디렉토리에 google-services.json 을 카피합니다.
+
+<img src="http://postfiles3.naver.net/MjAxNzEyMDFfNDIg/MDAxNTEyMDU5NzkzNjM4.reQ_Q9N4iBB7Qb8oR9JIc6pneE_aE14Tw28zJFyIdWgg.bR3GridBPWMx6hbCcroMOkKn2l1necuPshbTg6SMfZog.PNG.akj61300/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2017-12-01_%EC%98%A4%EC%A0%84_1.36.07.png?type=w773" width="400px" />
+
+다음은 스마트폰에서 bcm6 데이터를 쓰기권한을 가질수 있도록 해주어야 합니다. Firebase Console 에서 다시 Rule 탭으로 가서 다음과 같이 변경하고 게시합니다.
+
+<img src="http://postfiles11.naver.net/MjAxNzEyMDFfMTYg/MDAxNTEyMDYwMjcyODYy.JKLLymnnjdGVQOsGKwK-HMbTDmLPIpxbUm3KE6us5ugg.pJ_-U2oDPx5DLYhNVw1LCvSIzesYaDXuDKe9H5D4A1gg.PNG.akj61300/rule30.png?type=w773" />
+
+변경된 권한을 주의깊게 봐주세요. Firebase 는 특정 데이터 영역만 별도로 권한을 줄 수 있습니다. 전체적인 권한은 읽기권한이 모두 허용되어 있고, 쓰기 권한은 인증된 사용자만 가능하지만, bcm6 하위 데이터에 한해서는 읽기권한 쓰기권한을 모두 사용 가능합니다.
+
+이제 설정이 끝났으니 본격적으로 스마트폰용 어플 코드를 작성해보겠습니다. 
+
+## 스마트폰에서 원격제어하는 코드 작성하기
+
+스마트폰에서 LED 를 제어하기 위해 먼저 UI 를 만들도록 하겠습니다.
+activity_main.xml 을 열고 드래그앤 드랍으로 Switch 를 가운데에 배치합니다.
+
+<img src="http://postfiles5.naver.net/MjAxNzEyMDFfMTA0/MDAxNTEyMDYwNjc0NTM2.sUn_NLquD-12ImFAI8QOlhiQ1dsIvbfFVo2v4AqzUucg.KiZUy_IcIdxdXjb1ThrV5CGWMmqylIgLPp6l2afXx3Ig.PNG.akj61300/ui01.png?type=w773" width="400px"/>
+
+Switch 의 텍스트는 bcm6, id 는 bcm6Switch 로 변경합니다.
+
+<img src="http://postfiles8.naver.net/MjAxNzEyMDFfNTQg/MDAxNTEyMDYwNzk5NDgx.MLt8Bh6XbrtJDOEvTg1RGG6n7srXiKUvhe0MBtwnInog.kt1VfYuVLP54_L36ovd-skTdk0DA1JXL4D9iO5oRAXMg.PNG.akj61300/bcm6switch.png?type=w773" />
+
+스마트폰 모듈의 MainActivity.kt 를 다음과 같이 편집합니다.
 
 ```kotlin
-val service = PeripheralManagerService()
+package com.akj.firstthingsmobile
+
+import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.activity_main.*
+
+class MainActivity : AppCompatActivity() {
+    val database = FirebaseDatabase.getInstance().reference
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        
+        // Firebase 에서 bcm6 값을 읽어 값이 on 이면 스위치를 켜고 아닌 경우 스위치를 끈다.
+        database.child("bcm6").addListenerForSingleValueEvent(object:ValueEventListener{
+            override fun onCancelled(error: DatabaseError?) {
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot?) {
+                snapshot?.let {
+                    bcm6Switch.isChecked = "on".equals(it.value.toString())
+                }
+            }
+        })
+        
+        bcm6Switch.setOnClickListener { 
+            // 스위치가 클릭되면 스위치의 값에 따라 Firebase 의 bcm6 값을 on 또는 off 로 바꾼다.
+            database.child("bcm6").setValue(if(bcm6Switch.isChecked) "on" else "off")
+        }
+    }
+}
 ```
 
-위 코드에서 Android Things 에 장치관리자를 가져옵니다.
+## 결과 확인
 
-```kotlin
-gpio = service.openGpio(gpioName)
-```
+<img src="http://postfiles3.naver.net/MjAxNzEyMDJfMTcz/MDAxNTEyMjAyODUzNzc0.mxW7zpMAskgNLZiDxGO_-1Ot3P_qMN2W-G68thPzaUQg.qsqcyueJeIpBiUHTEvQNV-j9cEtiQ3MwyBCbc7B-nZ4g.GIF.akj61300/result02.gif?type=w773" width="320px" />
 
-그리고 PeripheralManagerService 를 이용해 GPIO Pinout 객체를 가져오는 것이죠.
-
-이제 프로그램을 실행하고 결과를 확인하도록 하겠습니다.
-
-## 결과 확인해보기
-
-프로그램이 실행되면 LED 가 1초마다 꺼졌다가 켜지게 됩니다. 
-
-<img src="http://postfiles1.naver.net/MjAxNzExMjZfOTgg/MDAxNTExNjQ3MjgyMTQ3.dLGvcFJve4zdlSLj3t2mo_eXjT3Oizfe0Dgtv91svf0g.RO866aII8ihmj3s-CHP4fYzJIMoJJ6SXHY4JEHBrf4Qg.GIF.akj61300/android-things-result01.gif?type=w773" width="400px" />
-
-Android Things 를 사용해서 간단한 LED 제어를 해보았습니다. 회로 연결이 익숙하다면, LED 제어 코드는 매우 짧기 때문에 특별한 어려움이 없을것으로 생각됩니다.
+스마트폰에서 스위치를 켜면 LED 에 불이 들어오고, 스위치를 끄면 LED 의 불이 꺼지게 됩니다. Firebase 와 Android Things 를 이용하면 쉽게 원격제어가 가능합니다.
 
 ## 참고소스
 
-이 문서에서 작동되는 코드는 github 에 공유되어 있습니다. 다음 github 주소를 참조해주세요.
+참고소스는 GitHub 에 등록되어 있으며 링크는 다음과 같습니다.
 
-[https://github.com/ahn-kj/android-things-study/tree/master/FirstAndroidThings](https://github.com/ahn-kj/android-things-study/tree/master/FirstAndroidThings)
+[https://github.com/ahn-kj/android-things-study/tree/master/FirstAnroidThingsWithFirebase](https://github.com/ahn-kj/android-things-study/tree/master/FirstAnroidThingsWithFirebase)
+
+> google-services.json 은 포함되어 있지않으며 반드시 google-services.json 을 추가하고 실행하시기 바랍니다.
+
 
 ## Next Step
 
-다음 과정에서는 지금 만들어본 LED 제어를 Firebase 와 연동하여 웹에서 원격으로 제어하는 방법을 알아보고, 또 안드로이드 스마트폰에서 LED 제어를 할 수 있도록 프로그램을 구현해봅니다.
+다음 스텝에서는 Android Things 에서 PWM 신호를 이용하여 LED 애니메이션을 제어해보도록 합니다.
